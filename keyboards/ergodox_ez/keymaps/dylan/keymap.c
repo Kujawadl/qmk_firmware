@@ -172,33 +172,33 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case UC_SHRG: // ¯\_(ツ)_/¯
       if (record->event.pressed) {
-        SEND_STRING(SS_LCTRL(" "));
+        SEND_STRING(SS_LCTRL(SS_LALT(" ")));
         send_unicode_hex_string("00af 005c 005f 0028 30c4 0029 005f 002f 00af");
-        SEND_STRING(SS_LCTRL(" "));
+        SEND_STRING(SS_LCTRL(SS_LALT(" ")));
       }
       return false;
       break;
     case UC_DISA: // ಠ_ಠ
       if (record->event.pressed) {
-        SEND_STRING(SS_LCTRL(" "));
+        SEND_STRING(SS_LCTRL(SS_LALT(" ")));
         send_unicode_hex_string("0CA0 005F 0CA0");
-        SEND_STRING(SS_LCTRL(" "));
+        SEND_STRING(SS_LCTRL(SS_LALT(" ")));
       }
       return false;
       break;
     case UC_CRY: // ಥ_ಥ
       if (record->event.pressed) {
-        SEND_STRING(SS_LCTRL(" "));
+        SEND_STRING(SS_LCTRL(SS_LALT(" ")));
         send_unicode_hex_string("0CA5 005F 0CA5");
-        SEND_STRING(SS_LCTRL(" "));
+        SEND_STRING(SS_LCTRL(SS_LALT(" ")));
       }
       return false;
       break;
     case UC_STRT: // ᕕ( ᐛ )ᕗ
       if (record->event.pressed) {
-        SEND_STRING(SS_LCTRL(" "));
+        SEND_STRING(SS_LCTRL(SS_LALT(" ")));
         send_unicode_hex_string("1555 0028 0020 141B 0020 0029 1557");
-        SEND_STRING(SS_LCTRL(" "));
+        SEND_STRING(SS_LCTRL(SS_LALT(" ")));
       }
       return false;
       break;
