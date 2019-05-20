@@ -13,7 +13,10 @@ enum custom_keycodes {
   EPRM,
   VRSN,
   RGB_SLD,
-  
+  UC_SHRG,  // ¯\_(ツ)_/¯
+  UC_DISA,  // ಠ_ಠ
+  UC_CRY,   // ಥ_ಥ
+  UC_STRT,  // ᕕ( ᐛ )ᕗ
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -69,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
   * |        |  %   |  ^   |  [   |  ]   |  ~   |      |           |      |  &   |  N1  |  N2  |  N3  | Enter|  Enter |
   * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
-  *   |      |      |      |      |      |                                       |  N0  |  N0  |  .   |  =   |      |
+  *   | SHRG | DISA | CRY  | STRT |      |                                       |  N0  |  N0  |  .   |  =   |      |
   *   `----------------------------------'                                       `----------------------------------'
   *                                        ,-------------.       ,-------------.
   *                                        |      |  L2  |       |      |      |
@@ -81,11 +84,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   */
   [1] = LAYOUT_ergodox(
     // LEFT HAND
-    M(0),      KC_F1,    KC_F2,    KC_F3,       KC_F4,       KC_F5,    KC_TRNS,
+    VRSN,      KC_F1,    KC_F2,    KC_F3,       KC_F4,       KC_F5,    KC_TRNS,
     KC_TRNS,   KC_EXLM,  KC_AT,    KC_LCBR,     KC_RCBR,     KC_PIPE,  KC_TRNS,
     KC_TRNS,   KC_HASH,  KC_DLR,   KC_LPRN,     KC_RPRN,     KC_GRAVE, 
     KC_TRNS,   KC_PERC,  KC_CIRC,  KC_LBRACKET, KC_RBRACKET, KC_TILD,  KC_TRNS,
-      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    KC_TRNS,
+      UC_SHRG, UC_DISA, UC_CRY,  UC_STRT,    KC_TRNS,
                                                       KC_TRNS, TO(2),
                                                                 KC_TRNS,
                                             KC_TRNS, KC_TRNS, KC_TRNS,
@@ -146,19 +149,6 @@ const uint16_t PROGMEM fn_actions[] = {
   [1] = ACTION_LAYER_TAP_TOGGLE(1)
 };
 
-// leaving this in place for compatibilty with old keymaps cloned and re-compiled.
-const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
-{
-      switch(id) {
-        case 0:
-        if (record->event.pressed) {
-          SEND_STRING (QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION);
-        }
-        break;
-      }
-    return MACRO_NONE;
-};
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     // dynamically generate these.
@@ -180,16 +170,49 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    
+    case UC_SHRG: // ¯\_(ツ)_/¯
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTRL(" "));
+        send_unicode_hex_string("00af 005c 005f 0028 30c4 0029 005f 002f 00af");
+        SEND_STRING(SS_LCTRL(" "));
+      }
+      return false;
+      break;
+    case UC_DISA: // ಠ_ಠ
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTRL(" "));
+        send_unicode_hex_string("0CA0 005F 0CA0");
+        SEND_STRING(SS_LCTRL(" "));
+      }
+      return false;
+      break;
+    case UC_CRY: // ಥ_ಥ
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTRL(" "));
+        send_unicode_hex_string("0CA5 005F 0CA5");
+        SEND_STRING(SS_LCTRL(" "));
+      }
+      return false;
+      break;
+    case UC_STRT: // ᕕ( ᐛ )ᕗ
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTRL(" "));
+        send_unicode_hex_string("1555 0028 0020 141B 0020 0029 1557");
+        SEND_STRING(SS_LCTRL(" "));
+      }
+      return false;
+      break;
   }
   return true;
 }
 
-void matrix_init_user (void) {
+void matrix_init_user (void) { 
+  set_unicode_input_mode(UC_OSX);
+  
   ergodox_board_led_off();
-    ergodox_right_led_1_off();
-    ergodox_right_led_2_off();
-    ergodox_right_led_3_off();
+  ergodox_right_led_1_off();
+  ergodox_right_led_2_off();
+  ergodox_right_led_3_off();
 }
 
 void led_set_user(uint8_t usb_led) {
